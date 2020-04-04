@@ -3,7 +3,7 @@ import createBoard from "./components/board.js";
 import createControl from "./components/control.js";
 import createFilter from "./components/filter.js";
 import createLoadMoreButton from "./components/loadMoreButton.js";
-import createTasksList from "./components/task.js";
+import createTasksList from "./components/taskslist.js";
 import createTaskEdit from "./components/taskEdit.js";
 import render from "./components/utils.js";
 
