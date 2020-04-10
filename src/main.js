@@ -1,4 +1,4 @@
-import {TASK_COUNT, TASK_FIRST_COUNT} from "./components/const.js";
+import {TASK_COUNT, TASK_FIRST_COUNT, LOAD_MORE_COUNT} from "./components/const.js";
 import createBoard from "./components/board.js";
 import createControl from "./components/control.js";
 import createFilter from "./components/filter.js";
@@ -21,8 +21,17 @@ const taskListElement = boardElement.querySelector(`.board__tasks`);
 
 const init = () => {
   render(taskListElement, createTaskEdit(tasks[0]));
-  render(taskListElement, createTasksList(TASK_FIRST_COUNT));
+  render(taskListElement, createTasksList(tasks.slice(1, TASK_FIRST_COUNT)));
   render(boardElement, createLoadMoreButton());
 };
 
 init();
+
+const loadMoreButton = boardElement.querySelector('.load-more');
+loadMoreButton.addEventListener('click', function () {
+  const loadedTasks = boardElement.querySelectorAll('.card');
+  render(taskListElement, createTasksList(tasks.slice(loadedTasks.length, loadedTasks.length+LOAD_MORE_COUNT)));
+  if (loadedTasks.length+LOAD_MORE_COUNT >= tasks.length) {
+    loadMoreButton.remove();
+  };
+});
