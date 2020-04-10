@@ -1,6 +1,6 @@
 // descriptions
 import {getRandomInteger} from "../../components/utils.js";
-import {MONTHS, COLORS, DAYS} from "../../components/const.js";
+import {COLORS, DAYS} from "../../components/const.js";
 
 const Descriptions = [
   `Изучить теорию`,
@@ -44,17 +44,14 @@ const getRandomDate = () => {
 
   return targetDate;
 };
-
-export const dueDate = Math.random() > 0.5 ? null : getRandomDate();
-
 // повторяющиеся дни
 
 const generateRepeatingDays = () => {
-  return DAYS.reduce(function(day, i) {
+  return DAYS.reduce(function (day, i) {
     day[i] = Math.random() > 0.5;
     return day;
   }, {});
-}
+};
 
 // генерация тасков
 const generateTask = () => {

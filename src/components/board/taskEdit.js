@@ -1,5 +1,5 @@
-import {MONTHS, COLORS, DAYS} from "./const.js";
-import {formatTime} from "../mocks/board/task.js";
+import {MONTHS, COLORS, DAYS} from "../const.js";
+import {formatTime} from "../../mocks/board/task.js";
 
 const createColorsMarkup = (colors, currentColor) => {
   return colors
@@ -11,7 +11,7 @@ const createColorsMarkup = (colors, currentColor) => {
           class="card__color-input card__color-input--${color} visually-hidden"
           name="color"
           value="${color}"
-          ${currentColor === color ? `checked` : ``}
+        ${currentColor === color ? `checked` : ``}
         />
         <label
           for="color-${color}--${index}"

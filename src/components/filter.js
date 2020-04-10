@@ -15,7 +15,7 @@ const createFilterItem = (filter, isChecked) => {
       ${name} <span class="filter__${name}-count">${count}</span></label
     >`
   );
-}
+};
 
 const filtersMarkup = filters.map((it, i) => createFilterItem(it, i === 0)).join(`\n`);
 
@@ -24,7 +24,7 @@ const createFilter = () => {
     `<section class="main__filter filter container">
       ${filtersMarkup}
     </section>`
-  )
-}
+  );
+};
 
 export default createFilter;
