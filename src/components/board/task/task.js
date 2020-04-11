@@ -1,5 +1,5 @@
-import {MONTHS} from "../const.js";
-import {formatTime} from "../../mocks/board/task.js";
+import {MONTHS} from "../../const.js";
+import {formatTime} from "../../../mocks/board/task.js";
 
 const createTask = (task) => {
   const {description, dueDate, color, repeatingDays, isArchive, isFavorite} = task;

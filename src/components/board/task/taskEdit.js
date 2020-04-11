@@ -1,48 +1,9 @@
-import {MONTHS, COLORS, DAYS} from "../const.js";
-import {formatTime} from "../../mocks/board/task.js";
-
-const createColorsMarkup = (colors, currentColor) => {
-  return colors
-    .map((color, index) => {
-      return (
-        `<input
-          type="radio"
-          id="color-${color}-${index}"
-          class="card__color-input card__color-input--${color} visually-hidden"
-          name="color"
-          value="${color}"
-        ${currentColor === color ? `checked` : ``}
-        />
-        <label
-          for="color-${color}--${index}"
-          class="card__color card__color--${color}"
-          >${color}</label
-        >`
-      );
-    })
-    .join(`\n`);
-};
-
-const createRepeatingDaysMarkup = (days, repeatingDays) => {
-  return days
-    .map((day, index) => {
-      const isChecked = repeatingDays[day];
-      return (
-        `<input
-          class="visually-hidden card__repeat-day-input"
-          type="checkbox"
-          id="repeat-${day}-${index}"
-          name="repeat"
-          value="${day}"
-          ${isChecked ? `checked` : ``}
-        />
-        <label class="card__repeat-day" for="repeat-${day}-${index}"
-          >${day}</label
-        >`
-      );
-    })
-    .join(`\n`);
-};
+import {MONTHS, COLORS, DAYS} from "../../const.js";
+import {formatTime} from "../../../mocks/board/task.js";
+import {createColorsMarkup} from "./colorsEdit.js";
+import {createRepeatingDaysMarkup} from "./repeatingDaysEdit.js";
+import {dateShowMarkup} from "./dateShowEdit.js";
+import {repeatingBlockEdit} from "./repeatingBlockEdit.js";
 
 const createTaskEdit = (task) => {
   const {description, dueDate, color, repeatingDays} = task;
@@ -86,35 +47,13 @@ const createTaskEdit = (task) => {
                   date: <span class="card__date-status">${isDateShowing ? `yes` : `no`}</span>
                 </button>
 
-                ${
-    isDateShowing ?
-      `<fieldset class="card__date-deadline">
-                      <label class="card__input-deadline-wrap">
-                        <input
-                          class="card__date"
-                          type="text"
-                          placeholder=""
-                          name="date"
-                          value="${date} ${time}"
-                        />
-                      </label>
-                    </fieldset>`
-      : ``
-    }
+                ${isDateShowing ? dateShowMarkup(date, time) : ``}
 
                 <button class="card__repeat-toggle" type="button">
                   repeat:<span class="card__repeat-status">yes</span>
                 </button>
 
-                ${
-    isRepeatingTask ?
-      `<fieldset class="card__repeat-days">
-                      <div class="card__repeat-days-inner">
-                        ${repeatingDaysMarkup}
-                      </div>
-                    </fieldset>`
-      : ``
-    }
+                ${isRepeatingTask ? repeatingBlockEdit(repeatingDaysMarkup) : ``}
               </div>
             </div>
             <div class="card__colors-inner">
