@@ -22,10 +22,16 @@ const boardElement = mainElement.querySelector(`.board`);
 const taskListElement = boardElement.querySelector(`.board__tasks`);
 const loadMoreButton = boardElement.querySelector(`.load-more`);
 
-loadMoreButton.addEventListener(`click`, function () {
+const loadMoreTasks = () => {
   const loadedTasks = boardElement.querySelectorAll(`.card`);
-  render(taskListElement, createTasksList(tasks.slice(loadedTasks.length, loadedTasks.length + LOAD_MORE_COUNT)));
-  if (loadedTasks.length + LOAD_MORE_COUNT >= tasks.length) {
+  const nextLoadingCount = loadedTasks.length + LOAD_MORE_COUNT;
+  const nextTasksList = tasks.slice(loadedTasks.length, nextLoadingCount);
+
+  render(taskListElement, createTasksList(nextTasksList));
+
+  if (nextLoadingCount >= tasks.length) {
     loadMoreButton.remove();
   }
-});
+}
+
+loadMoreButton.addEventListener(`click`, loadMoreTasks);
