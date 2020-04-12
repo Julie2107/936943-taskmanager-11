@@ -1,27 +1,22 @@
-import {MONTHS, COLORS, DAYS} from "../../const.js";
-import {formatTime} from "../../../mocks/board/task.js";
+import {COLORS, DAYS} from "../../const.js";
 import {createColorsMarkup} from "./colorsEdit.js";
-import {createRepeatingDaysMarkup} from "./repeatingDaysEdit.js";
-import {dateShowMarkup} from "./dateShowEdit.js";
+import {repeatToggleMarkup, createRepeatingDaysMarkup} from "./repeatingDaysEdit.js";
+import {editDatesMarkup, deadlineToggleMarkup} from "././taskDate.js";
 import {repeatingBlockEdit} from "./repeatingBlockEdit.js";
+import {getExpiredClass} from "./task.js";
 
 const createTaskEdit = (task) => {
   const {description, dueDate, color, repeatingDays} = task;
 
-  const isDateShowing = !!dueDate;
-  const isExpired = dueDate instanceof Date && dueDate < Date.now();
-  const date = isDateShowing ? `${dueDate.getDate()} ${MONTHS[dueDate.getMonth()]}` : ``;
-  const time = isDateShowing ? formatTime(dueDate) : ``;
   const isRepeatingTask = Object.values(repeatingDays).some(Boolean);
-  const repeatClass = Object.values(repeatingDays).some(Boolean) ? `card--repeat` : ``;
-
-  const expiredClass = isExpired ? `card--deadline` : ``;
+  const repeatMarkup = isRepeatingTask ? repeatingBlockEdit(createRepeatingDaysMarkup(DAYS, repeatingDays)) : ``;
+  const repeatClass = isRepeatingTask ? `card--repeat` : ``;
 
   const colorsMarkup = createColorsMarkup(COLORS, color);
-  const repeatingDaysMarkup = createRepeatingDaysMarkup(DAYS, repeatingDays);
+
 
   return (
-    `<article class="card card--edit card--${color} ${repeatClass}  ${expiredClass}">
+    `<article class="card card--edit card--${color} ${repeatClass}  ${getExpiredClass(dueDate)}">
       <form class="card__form" method="get">
         <div class="card__inner">
           <div class="card__color-bar">
@@ -43,17 +38,13 @@ const createTaskEdit = (task) => {
           <div class="card__settings">
             <div class="card__details">
               <div class="card__dates">
-                <button class="card__date-deadline-toggle" type="button">
-                  date: <span class="card__date-status">${isDateShowing ? `yes` : `no`}</span>
-                </button>
+                ${deadlineToggleMarkup(dueDate)}
 
-                ${isDateShowing ? dateShowMarkup(date, time) : ``}
+                ${editDatesMarkup(dueDate)}
 
-                <button class="card__repeat-toggle" type="button">
-                  repeat:<span class="card__repeat-status">yes</span>
-                </button>
+                ${repeatToggleMarkup(isRepeatingTask)}
 
-                ${isRepeatingTask ? repeatingBlockEdit(repeatingDaysMarkup) : ``}
+                ${repeatMarkup}
               </div>
             </div>
             <div class="card__colors-inner">

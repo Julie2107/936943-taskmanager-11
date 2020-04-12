@@ -1,34 +1,22 @@
-import {MONTHS} from "../../const.js";
-import {formatTime} from "../../../mocks/board/task.js";
+import {taskControlsMarkup} from "./taskControls.js";
+import {taskDatesMarkup} from "./taskDate.js";
+
+export const getExpiredClass = (currentDate) => {
+  const isExpired = currentDate instanceof Date && currentDate < Date.now();
+  return isExpired ? `card--deadline` : ``;
+};
 
 const createTask = (task) => {
   const {description, dueDate, color, repeatingDays, isArchive, isFavorite} = task;
 
-  const isDateShowing = !!dueDate;
-  const date = isDateShowing ? `${dueDate.getDate()} ${MONTHS[dueDate.getMonth()]}` : ``;
-  const time = isDateShowing ? formatTime(dueDate) : ``;
   const repeatClass = Object.values(repeatingDays).some(Boolean) ? `card--repeat` : ``;
-  const isExpired = dueDate instanceof Date && dueDate < Date.now();
-  const expiredClass = isExpired ? `card--deadline` : ``;
-  const isArchiveButton = isArchive ? `` : `card__btn--disabled`;
-  const isFavoriteButton = isFavorite ? `` : `card__btn--disabled`;
+
   return (
-    `<article class="card card--${color} ${repeatClass} ${expiredClass}">
+    `<article class="card card--${color} ${repeatClass} ${getExpiredClass(dueDate)}">
       <div class="card__form">
         <div class="card__inner">
           <div class="card__control">
-            <button type="button" class="card__btn card__btn--edit">
-              edit
-            </button>
-            <button type="button" class="card__btn card__btn--archive ${isArchiveButton}">
-              archive
-            </button>
-            <button
-              type="button"
-              class="card__btn card__btn--favorites ${isFavoriteButton}"
-            >
-              favorites
-            </button>
+            ${taskControlsMarkup(isArchive, isFavorite)}
           </div>
 
           <div class="card__color-bar">
@@ -43,14 +31,7 @@ const createTask = (task) => {
 
           <div class="card__settings">
             <div class="card__details">
-              <div class="card__dates">
-                <div class="card__date-deadline">
-                  <p class="card__input-deadline-wrap">
-                    <span class="card__date">${date}</span>
-                    <span class="card__time">${time}</span>
-                  </p>
-                </div>
-              </div>
+              ${taskDatesMarkup(dueDate)}
             </div>
           </div>
         </div>
