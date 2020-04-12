@@ -1,5 +1,5 @@
 // descriptions
-import {getRandomInteger} from "../../components/utils.js";
+import {getRandomInteger, getRandomBoolean} from "../../components/utils.js";
 import {COLORS, DAYS} from "../../components/const.js";
 
 const Descriptions = [
@@ -18,12 +18,9 @@ const WEEK_PERIOD = 8;
 export const generateDescription = (desc) => desc[getRandomInteger(0, desc.length)];
 
 // colors
-
-
 export const generateColor = (colors) => colors[getRandomInteger(0, colors.length)];
 
 // date
-
 const castTimeFormat = (value) => {
   return value < 10 ? `0${value}` : String(value);
 };
@@ -37,7 +34,7 @@ export const formatTime = (date) => {
 
 const getRandomDate = () => {
   const targetDate = new Date();
-  const sign = Math.random() > 0.5 ? 1 : -1;
+  const sign = getRandomBoolean() ? 1 : -1;
   const diffValue = sign * getRandomInteger(0, WEEK_PERIOD);
 
   targetDate.setDate(targetDate.getDate() + diffValue);
@@ -46,11 +43,13 @@ const getRandomDate = () => {
 };
 // повторяющиеся дни
 
+const setDay = (days, day) => {
+  days[day] = getRandomBoolean();
+  return days;
+}
+
 const generateRepeatingDays = () => {
-  return DAYS.reduce(function (day, i) {
-    day[i] = Math.random() > 0.5;
-    return day;
-  }, {});
+  return DAYS.reduce(setDay, {});
 };
 
 // генерация тасков
@@ -61,8 +60,8 @@ const generateTask = () => {
     dueDate,
     color: generateColor(COLORS),
     repeatingDays: dueDate ? false : generateRepeatingDays(),
-    isArchive: Math.random() > 0.5,
-    isFavorite: Math.random() > 0.5,
+    isArchive: getRandomBoolean(),
+    isFavorite: getRandomBoolean(),
   };
 };
 

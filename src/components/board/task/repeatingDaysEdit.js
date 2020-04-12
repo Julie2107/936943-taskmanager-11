@@ -16,9 +16,10 @@ const repeatingDaysItem = (day, index, state) => {
 };
 // разметка для редактирования
 export const repeatToggleMarkup = (isRepeat) => {
+  const checkRepeatState = isRepeat ? `yes` : `no`;
   return (
     `<button class="card__repeat-toggle" type="button">
-    repeat:<span class="card__repeat-status">${isRepeat ? `yes` : `no`}</span>
+    repeat:<span class="card__repeat-status">${checkRepeatState}</span>
     </button>`
   );
 };

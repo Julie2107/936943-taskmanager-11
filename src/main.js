@@ -3,7 +3,7 @@ import createBoard from "./components/board/board.js";
 import createControl from "./components/control.js";
 import createFilter from "./components/filter.js";
 import createTasksList from "./components/board/taskslist.js";
-import render from "./components/utils.js";
+import {render} from "./components/utils.js";
 import {generateTasks} from "./mocks/board/task.js";
 
 const mainElement = document.querySelector(`.main`);

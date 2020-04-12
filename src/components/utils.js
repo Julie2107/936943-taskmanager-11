@@ -1,9 +1,7 @@
 import {Position} from "./const.js";
 
-export const getRandomInteger = (min = 0, max) => {
-  return min + Math.floor(Math.random() * (max - min));
-};
+export const getRandomInteger = (max, min = 0) => min + Math.floor(Math.random() * (max - min));
 
-const render = (container, template, place = Position.BEFOREEND) => container.insertAdjacentHTML(place, template);
+export const getRandomBoolean = () => Math.random() > 0.5;
 
-export default render;
+export const render = (container, template, place = Position.BEFOREEND) => container.insertAdjacentHTML(place, template);
