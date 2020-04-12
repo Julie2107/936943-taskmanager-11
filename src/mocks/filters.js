@@ -1,14 +1,15 @@
+import {getRandomInteger} from "../components/utils.js";
+
+const RANDOM_RANGE = 10;
 const filterNames = [
   `all`, `overdue`, `today`, `favorites`, `repeating`, `archive`
 ];
 
-const generateFilters = () => {
-  return filterNames.map((it) => {
-    return {
-      name: it,
-      count: Math.floor(Math.random() * 10),
-    };
-  });
-};
+const generateFilters = () => filterNames.map((filter) => {
+  return {
+    name: filter,
+    count: getRandomInteger(RANDOM_RANGE),
+  };
+});
 
 export {generateFilters};

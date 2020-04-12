@@ -1,5 +1,3 @@
-
-
 export const createColorsMarkup = (colors, currentColor) => {
   return colors
     .map((color, index) => {

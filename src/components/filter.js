@@ -1,6 +1,7 @@
 import {generateFilters} from "../mocks/filters.js";
 
 const filters = generateFilters();
+
 const createFilterItem = (filter, isChecked) => {
   const {name, count} = filter;
   const checkState = isChecked ? `checked` : ``;
@@ -19,7 +20,7 @@ const createFilterItem = (filter, isChecked) => {
   );
 };
 
-const filtersMarkup = filters.map((it, i) => createFilterItem(it, i === 0)).join(`\n`);
+const filtersMarkup = filters.map((filter, i) => createFilterItem(filter, i === 0)).join(`\n`);
 
 const createFilter = () => {
   return (

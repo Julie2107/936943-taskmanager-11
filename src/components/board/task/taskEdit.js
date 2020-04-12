@@ -11,9 +11,7 @@ const createTaskEdit = (task) => {
   const isRepeatingTask = Object.values(repeatingDays).some(Boolean);
   const repeatMarkup = isRepeatingTask ? repeatingBlockEdit(createRepeatingDaysMarkup(DAYS, repeatingDays)) : ``;
   const repeatClass = isRepeatingTask ? `card--repeat` : ``;
-
   const colorsMarkup = createColorsMarkup(COLORS, color);
-
 
   return (
     `<article class="card card--edit card--${color} ${repeatClass}  ${getExpiredClass(dueDate)}">

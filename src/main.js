@@ -32,6 +32,6 @@ const loadMoreTasks = () => {
   if (nextLoadingCount >= tasks.length) {
     loadMoreButton.remove();
   }
-}
+};
 
 loadMoreButton.addEventListener(`click`, loadMoreTasks);
