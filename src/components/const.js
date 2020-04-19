@@ -4,7 +4,8 @@ export const LOAD_MORE_COUNT = 8;
 
 export const Position = {
   BEFOREEND: `beforeend`,
-  AFTEREND: `afterend`
+  AFTEREND: `afterend`,
+  AFTERBEGIN: `afterbegin`
 };
 
 export const MONTHS = [
