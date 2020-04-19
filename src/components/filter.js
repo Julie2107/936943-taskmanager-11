@@ -1,6 +1,4 @@
-import {generateFilters} from "../mocks/filters.js";
 import {createElement} from "./utils.js";
-const filters = generateFilters();
 
 const createFilterItem = (filter, isChecked) => {
   const {name, count} = filter;
@@ -20,8 +18,7 @@ const createFilterItem = (filter, isChecked) => {
   );
 };
 
-
-const createFilter = () => {
+const createFilter = (filters) => {
   const filtersMarkup = filters.map((filter, i) => createFilterItem(filter, i === 0)).join(`\n`);
   return (
     `<section class="main__filter filter container">
@@ -40,7 +37,7 @@ export default class Filter {
     return createFilter(this._filters);
   }
 
-  getElement()  {
+  getElement() {
     if (!this._element) {
       this._element = createElement(this.getTemplate());
     }

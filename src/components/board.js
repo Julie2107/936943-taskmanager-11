@@ -1,6 +1,5 @@
 import {createSorter} from "./board/sort.js";
 import {createElement} from "./utils.js";
-import {createTasksBoard} from "./board/tasks.js";
 
 const createBoard = () => {
   return (

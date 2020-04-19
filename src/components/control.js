@@ -39,7 +39,7 @@ export default class Controls {
   }
 
   getTemplate() {
-    return createControl()
+    return createControl();
   }
 
   getElement() {
@@ -52,4 +52,4 @@ export default class Controls {
   removeElement() {
     this._element = null;
   }
-};
+}

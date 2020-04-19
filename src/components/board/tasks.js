@@ -1,17 +1,4 @@
-import createTaskEdit from "./task/taskEdit.js";
-import createTasksList from "./taskslist.js";
-import createLoadMoreButton from "./loadMoreButton.js";
 import {createElement} from "../utils.js";
-
-export const createTasksBoard = () => {
-  return (
-    `<div class="board__tasks">
-      ${createTaskEdit(taskEdit)}
-      ${createTasksList(tasksList)}
-    </div>
-    ${createLoadMoreButton()}`
-  );
-};
 
 const createTasks = () => {
   return (
@@ -39,4 +26,4 @@ export default class Tasks {
   removeElement() {
     this._element = null;
   }
-};
+}
