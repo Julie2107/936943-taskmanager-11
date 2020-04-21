@@ -25,6 +25,21 @@ export const renderTask = (taskListElement, task) => {
   render(taskListElement, taskComponent.getElement());
 };
 
+const loadMoreHandler = (boardComponent, tasks, container, button) => {
+  const loadedTasks = boardComponent.getElement().querySelectorAll(`.card`);
+  const nextLoadingCount = loadedTasks.length + LOAD_MORE_COUNT;
+  const nextTasksList = tasks.slice(loadedTasks.length, nextLoadingCount);
+
+  nextTasksList.forEach((task) => {
+    renderTask(container, task);
+  });
+
+  if (nextLoadingCount >= tasks.length) {
+    button.getElement().remove();
+    button.removeElement();
+  }
+};
+
 export const renderBoard = (boardComponent, tasks) => {
   render(boardComponent.getElement(), new TasksComponent().getElement());
 
@@ -41,20 +56,8 @@ export const renderBoard = (boardComponent, tasks) => {
 
   render(boardComponent.getElement(), loadMoreButton.getElement());
 
-  const loadMoreTasks = () => {
-    const loadedTasks = boardComponent.getElement().querySelectorAll(`.card`);
-    const nextLoadingCount = loadedTasks.length + LOAD_MORE_COUNT;
-    const nextTasksList = tasks.slice(loadedTasks.length, nextLoadingCount);
 
-    nextTasksList.forEach((task) => {
-      renderTask(taskListElement, task);
-    });
-
-    if (nextLoadingCount >= tasks.length) {
-      loadMoreButton.getElement().remove();
-      loadMoreButton.removeElement();
-    }
-  };
-  loadMoreButton.getElement().addEventListener(`click`, loadMoreTasks);
-
+  loadMoreButton.getElement().addEventListener(`click`, () => {
+    loadMoreHandler(boardComponent, tasks, taskListElement, loadMoreButton);
+  });
 };

@@ -15,9 +15,10 @@ const tasks = generateTasks(TASK_COUNT);
 const filters = generateFilters();
 
 const init = () => {
+  const boardComponent = new BoardComponent();
+
   render(headerElement, new ControlsComponent().getElement());
   render(mainElement, new FilterComponent(filters).getElement());
-  const boardComponent = new BoardComponent();
   render(mainElement, boardComponent.getElement());
   renderBoard(boardComponent, tasks);
 };
