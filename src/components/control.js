@@ -1,3 +1,5 @@
+import {createElement} from "./utils.js";
+
 const createControl = () => {
   return (
     `<section class="control__btn-wrap">
@@ -31,4 +33,23 @@ const createControl = () => {
   );
 };
 
-export default createControl;
+export default class Controls {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createControl();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

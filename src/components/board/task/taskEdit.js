@@ -4,6 +4,7 @@ import {repeatToggleMarkup, createRepeatingDaysMarkup} from "./repeatingDaysEdit
 import {editDatesMarkup, deadlineToggleMarkup} from "././taskDate.js";
 import {repeatingBlockEdit} from "./repeatingBlockEdit.js";
 import {getExpiredClass} from "./task.js";
+import {createElement} from "../../utils.js";
 
 const createTaskEdit = (task) => {
   const {description, dueDate, color, repeatingDays} = task;
@@ -37,11 +38,8 @@ const createTaskEdit = (task) => {
             <div class="card__details">
               <div class="card__dates">
                 ${deadlineToggleMarkup(dueDate)}
-
                 ${editDatesMarkup(dueDate)}
-
                 ${repeatToggleMarkup(isRepeatingTask)}
-
                 ${repeatMarkup}
               </div>
             </div>
@@ -63,4 +61,24 @@ const createTaskEdit = (task) => {
   );
 };
 
-export default createTaskEdit;
+export default class TaskEdit {
+  constructor(task) {
+    this._task = task;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTaskEdit(this._task);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
