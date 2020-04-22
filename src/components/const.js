@@ -1,6 +1,10 @@
 export const TASK_COUNT = 20;
 export const TASK_FIRST_COUNT = 8;
 export const LOAD_MORE_COUNT = 8;
+export const EscKeys = {
+  ESCAPE: `Escape`,
+  ESC: `Esc`
+};
 
 export const Position = {
   BEFOREEND: `beforeend`,

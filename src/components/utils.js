@@ -1,4 +1,4 @@
-import {Position} from "./const.js";
+import {Position, EscKeys} from "./const.js";
 
 export const getRandomInteger = (max, min = 0) => min + Math.floor(Math.random() * (max - min));
 
@@ -21,3 +21,5 @@ export const createElement = (template) => {
 
   return newElement.firstChild;
 };
+
+export const isEscKey = (evt) => evt.key === EscKeys.ESCAPE || evt.key === EscKeys.ESC;
