@@ -3,7 +3,10 @@ import TaskComponent from "./task/task.js";
 import TaskEditComponent from "./task/taskEdit.js";
 import TasksComponent from "./tasks.js";
 import LoadMoreButtonComponent from "./loadMoreButton.js";
-import {render} from "../utils.js";
+import SorterComponent from "./sort.js";
+import NoTasksComponent from "./no-tasks.js";
+import {render, isEscKey} from "../utils.js";
+
 
 export const renderTask = (taskListElement, task) => {
   const editButtonHandler = () => {
@@ -14,13 +17,26 @@ export const renderTask = (taskListElement, task) => {
     taskListElement.replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
   };
 
+  const escKeyHandler = (evt) => {
+    if (isEscKey(evt)) {
+      editFormSubmitHandler();
+      document.removeEventListener(`keydown`, escKeyHandler);
+    }
+  };
+
   const taskComponent = new TaskComponent(task);
   const editButton = taskComponent.getElement().querySelector(`.card__btn--edit`);
-  editButton.addEventListener(`click`, editButtonHandler);
+  editButton.addEventListener(`click`, () => {
+    editButtonHandler();
+    document.addEventListener(`keydown`, escKeyHandler);
+  });
 
   const taskEditComponent = new TaskEditComponent(task);
   const editForm = taskEditComponent.getElement().querySelector(`form`);
-  editForm.addEventListener(`submit`, editFormSubmitHandler);
+  editForm.addEventListener(`submit`, () => {
+    editFormSubmitHandler();
+    document.removeEventListener(`keydown`, escKeyHandler);
+  });
 
   render(taskListElement, taskComponent.getElement());
 };
@@ -40,7 +56,9 @@ const loadMoreHandler = (boardComponent, tasks, container, button) => {
   }
 };
 
-export const renderBoard = (boardComponent, tasks) => {
+const renderBoard = (boardComponent, tasks) => {
+
+  render(boardComponent.getElement(), new SorterComponent().getElement());
   render(boardComponent.getElement(), new TasksComponent().getElement());
 
   const taskListElement = boardComponent.getElement().querySelector(`.board__tasks`);
@@ -60,4 +78,14 @@ export const renderBoard = (boardComponent, tasks) => {
   loadMoreButton.getElement().addEventListener(`click`, () => {
     loadMoreHandler(boardComponent, tasks, taskListElement, loadMoreButton);
   });
+};
+
+export const getBoard = (boardComponent, tasks) => {
+  const isAllTasksArchived = tasks.every((task) => task.isArchive);
+
+  if (isAllTasksArchived) {
+    render(boardComponent.getElement(), new NoTasksComponent().getElement());
+    return;
+  }
+  renderBoard(boardComponent, tasks);
 };
