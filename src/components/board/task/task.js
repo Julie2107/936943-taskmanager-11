@@ -1,6 +1,6 @@
 import {taskControlsMarkup} from "./taskControls.js";
 import {taskDatesMarkup} from "./taskDate.js";
-import {createElement} from "../../utils.js";
+import AbstractComponent from "../../abstract-component.js";
 
 export const getExpiredClass = (currentDate) => {
   const isExpired = currentDate instanceof Date && currentDate < Date.now();
@@ -41,25 +41,13 @@ const createTask = (task) => {
   );
 };
 
-export default class Task {
+export default class Task extends AbstractComponent {
   constructor(task) {
+    super();
     this._task = task;
-
-    this._element = null;
   }
 
   getTemplate() {
     return createTask(this._task);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

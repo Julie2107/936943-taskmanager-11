@@ -7,14 +7,30 @@ import SorterComponent from "./sort.js";
 import NoTasksComponent from "./no-tasks.js";
 import {render, isEscKey} from "../utils.js";
 
+export const replace = (newComponent, oldComponent) => {
+  const parentElement = oldComponent.getElement().parentElement;
+  const newElement = newComponent.getElement();
+  const oldElement = oldComponent.getElement();
+
+  const isExistElements = !!(parentElement && newElement && oldElement);
+
+  if (isExistElements && parentElement.contains(oldElement)) {
+    parentElement.replaceChild(newElement, oldElement);
+  }
+};
+
+export const remove = (component) => {
+  component.getElement().remove();
+  component.removeElement();
+};
 
 export const renderTask = (taskListElement, task) => {
   const editButtonHandler = () => {
-    taskListElement.replaceChild(taskEditComponent.getElement(), taskComponent.getElement());
+    replace(taskEditComponent, taskComponent);
   };
 
   const editFormSubmitHandler = () => {
-    taskListElement.replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
+    replace(taskComponent, taskEditComponent);
   };
 
   const escKeyHandler = (evt) => {
@@ -38,7 +54,7 @@ export const renderTask = (taskListElement, task) => {
     document.removeEventListener(`keydown`, escKeyHandler);
   });
 
-  render(taskListElement, taskComponent.getElement());
+  render(taskListElement, taskComponent);
 };
 
 const loadMoreHandler = (boardComponent, tasks, container, button) => {
@@ -51,15 +67,14 @@ const loadMoreHandler = (boardComponent, tasks, container, button) => {
   });
 
   if (nextLoadingCount >= tasks.length) {
-    button.getElement().remove();
-    button.removeElement();
+    remove(button);
   }
 };
 
 const renderBoard = (boardComponent, tasks) => {
 
-  render(boardComponent.getElement(), new SorterComponent().getElement());
-  render(boardComponent.getElement(), new TasksComponent().getElement());
+  render(boardComponent.getElement(), new SorterComponent());
+  render(boardComponent.getElement(), new TasksComponent());
 
   const taskListElement = boardComponent.getElement().querySelector(`.board__tasks`);
 
@@ -72,7 +87,7 @@ const renderBoard = (boardComponent, tasks) => {
 
   const loadMoreButton = new LoadMoreButtonComponent();
 
-  render(boardComponent.getElement(), loadMoreButton.getElement());
+  render(boardComponent.getElement(), loadMoreButton);
 
 
   loadMoreButton.getElement().addEventListener(`click`, () => {
@@ -84,7 +99,7 @@ export const getBoard = (boardComponent, tasks) => {
   const isAllTasksArchived = tasks.every((task) => task.isArchive);
 
   if (isAllTasksArchived) {
-    render(boardComponent.getElement(), new NoTasksComponent().getElement());
+    render(boardComponent.getElement(), new NoTasksComponent());
     return;
   }
   renderBoard(boardComponent, tasks);

@@ -4,7 +4,7 @@ import {repeatToggleMarkup, createRepeatingDaysMarkup} from "./repeatingDaysEdit
 import {editDatesMarkup, deadlineToggleMarkup} from "././taskDate.js";
 import {repeatingBlockEdit} from "./repeatingBlockEdit.js";
 import {getExpiredClass} from "./task.js";
-import {createElement} from "../../utils.js";
+import AbstractComponent from "../../abstract-component.js";
 
 const createTaskEdit = (task) => {
   const {description, dueDate, color, repeatingDays} = task;
@@ -61,24 +61,13 @@ const createTaskEdit = (task) => {
   );
 };
 
-export default class TaskEdit {
+export default class TaskEdit extends AbstractComponent{
   constructor(task) {
+    super();
     this._task = task;
-    this._element = null;
   }
 
   getTemplate() {
     return createTaskEdit(this._task);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

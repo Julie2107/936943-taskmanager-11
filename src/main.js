@@ -17,9 +17,9 @@ const filters = generateFilters();
 const init = () => {
   const boardComponent = new BoardComponent();
 
-  render(headerElement, new ControlsComponent().getElement());
-  render(mainElement, new FilterComponent(filters).getElement());
-  render(mainElement, boardComponent.getElement());
+  render(headerElement, new ControlsComponent());
+  render(mainElement, new FilterComponent(filters));
+  render(mainElement, boardComponent);
   getBoard(boardComponent, tasks);
 };
 
