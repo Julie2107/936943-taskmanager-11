@@ -61,7 +61,7 @@ const createTaskEdit = (task) => {
   );
 };
 
-export default class TaskEdit extends AbstractComponent{
+export default class TaskEdit extends AbstractComponent {
   constructor(task) {
     super();
     this._task = task;
@@ -69,5 +69,10 @@ export default class TaskEdit extends AbstractComponent{
 
   getTemplate() {
     return createTaskEdit(this._task);
+  }
+
+  setSubmitHandler(handler) {
+    this.getElement().querySelector(`form`)
+      .addEventListener(`submit`, handler);
   }
 }

@@ -1,10 +1,11 @@
-import {TASK_FIRST_COUNT, LOAD_MORE_COUNT} from "../const.js";
 import TaskComponent from "./task/task.js";
 import TaskEditComponent from "./task/taskEdit.js";
+import {TASK_FIRST_COUNT, LOAD_MORE_COUNT} from "../const.js";
 import TasksComponent from "./tasks.js";
 import LoadMoreButtonComponent from "./loadMoreButton.js";
 import SorterComponent from "./sort.js";
 import NoTasksComponent from "./no-tasks.js";
+
 import {render, isEscKey} from "../utils.js";
 
 export const replace = (newComponent, oldComponent) => {
@@ -41,15 +42,13 @@ export const renderTask = (taskListElement, task) => {
   };
 
   const taskComponent = new TaskComponent(task);
-  const editButton = taskComponent.getElement().querySelector(`.card__btn--edit`);
-  editButton.addEventListener(`click`, () => {
+  taskComponent.setEditButtonClickHandler(() => {
     editButtonHandler();
     document.addEventListener(`keydown`, escKeyHandler);
   });
 
   const taskEditComponent = new TaskEditComponent(task);
-  const editForm = taskEditComponent.getElement().querySelector(`form`);
-  editForm.addEventListener(`submit`, () => {
+  taskEditComponent.setSubmitHandler(() => {
     editFormSubmitHandler();
     document.removeEventListener(`keydown`, escKeyHandler);
   });
@@ -58,7 +57,7 @@ export const renderTask = (taskListElement, task) => {
 };
 
 const loadMoreHandler = (boardComponent, tasks, container, button) => {
-  const loadedTasks = boardComponent.getElement().querySelectorAll(`.card`);
+  const loadedTasks = boardComponent.querySelectorAll(`.card`);
   const nextLoadingCount = loadedTasks.length + LOAD_MORE_COUNT;
   const nextTasksList = tasks.slice(loadedTasks.length, nextLoadingCount);
 
@@ -71,36 +70,38 @@ const loadMoreHandler = (boardComponent, tasks, container, button) => {
   }
 };
 
-const renderBoard = (boardComponent, tasks) => {
+export default class BoardController {
+  constructor(container) {
+    this._container = container;
 
-  render(boardComponent.getElement(), new SorterComponent());
-  render(boardComponent.getElement(), new TasksComponent());
-
-  const taskListElement = boardComponent.getElement().querySelector(`.board__tasks`);
-
-  let showingTasksCount = TASK_FIRST_COUNT;
-
-  tasks.slice(0, showingTasksCount)
-    .forEach((task) => {
-      renderTask(taskListElement, task);
-    });
-
-  const loadMoreButton = new LoadMoreButtonComponent();
-
-  render(boardComponent.getElement(), loadMoreButton);
-
-
-  loadMoreButton.getElement().addEventListener(`click`, () => {
-    loadMoreHandler(boardComponent, tasks, taskListElement, loadMoreButton);
-  });
-};
-
-export const getBoard = (boardComponent, tasks) => {
-  const isAllTasksArchived = tasks.every((task) => task.isArchive);
-
-  if (isAllTasksArchived) {
-    render(boardComponent.getElement(), new NoTasksComponent());
-    return;
+    this._noTasksComponent = new NoTasksComponent();
+    this._sortComponent = new SorterComponent();
+    this._tasksComponent = new TasksComponent();
+    this._loadMoreButtonComponent = new LoadMoreButtonComponent();
   }
-  renderBoard(boardComponent, tasks);
-};
+
+  render(tasks) {
+    const container = this._container.getElement();
+    const isAllTasksArchived = tasks.every((task) => task.isArchive);
+    if (isAllTasksArchived) {
+      render(container, this._noTasksComponent);
+      return;
+    }
+    render(container, this._sortComponent);
+    render(container, this._tasksComponent);
+    const taskListElement = this._tasksComponent.getElement();
+    let showingTasksCount = TASK_FIRST_COUNT;
+
+    tasks.slice(0, showingTasksCount)
+      .forEach((task) => {
+        renderTask(taskListElement, task);
+      });
+    const loadMoreButton = this._loadMoreButtonComponent;
+
+    render(container, loadMoreButton);
+
+    loadMoreButton.setClickHandler(() => {
+      loadMoreHandler(container, tasks, taskListElement, loadMoreButton);
+    });
+  }
+}
