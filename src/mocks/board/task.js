@@ -15,7 +15,7 @@ const DESCRIPTIONS = [
 
 const WEEK_PERIOD = 8;
 const HOURS_RATE = 10;
-const HOURS_FORMAT = 12;
+const HOURS_FORMAT = 24;
 const NEGATIVE = -1;
 const POSITIVE = 1;
 

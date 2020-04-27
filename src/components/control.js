@@ -1,4 +1,4 @@
-import {createElement} from "./utils.js";
+import AbstractComponent from "./abstract-component.js";
 
 const createControl = () => {
   return (
@@ -33,23 +33,8 @@ const createControl = () => {
   );
 };
 
-export default class Controls {
-  constructor() {
-    this._element = null;
-  }
-
+export default class Controls extends AbstractComponent {
   getTemplate() {
     return createControl();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
