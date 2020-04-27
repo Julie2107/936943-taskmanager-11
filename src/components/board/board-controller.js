@@ -13,7 +13,7 @@ export const replace = (newComponent, oldComponent) => {
   const newElement = newComponent.getElement();
   const oldElement = oldComponent.getElement();
 
-  const isExistElements = !!(parentElement && newElement && oldElement);
+  const isExistElements = Boolean(parentElement && newElement && oldElement);
 
   if (isExistElements && parentElement.contains(oldElement)) {
     parentElement.replaceChild(newElement, oldElement);
@@ -80,6 +80,16 @@ export default class BoardController {
     this._loadMoreButtonComponent = new LoadMoreButtonComponent();
   }
 
+  renderLoadMoreBtn(container, tasks, element) {
+    const loadMoreButton = this._loadMoreButtonComponent;
+
+    render(container, loadMoreButton);
+
+    loadMoreButton.setClickHandler(() => {
+      loadMoreHandler(container, tasks, element, loadMoreButton);
+    });
+  }
+
   render(tasks) {
     const container = this._container.getElement();
     const isAllTasksArchived = tasks.every((task) => task.isArchive);
@@ -96,12 +106,6 @@ export default class BoardController {
       .forEach((task) => {
         renderTask(taskListElement, task);
       });
-    const loadMoreButton = this._loadMoreButtonComponent;
-
-    render(container, loadMoreButton);
-
-    loadMoreButton.setClickHandler(() => {
-      loadMoreHandler(container, tasks, taskListElement, loadMoreButton);
-    });
+    this.renderLoadMoreBtn(container, tasks, taskListElement);
   }
 }
