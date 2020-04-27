@@ -3,7 +3,7 @@ import TaskEditComponent from "./task/taskEdit.js";
 import {TASK_FIRST_COUNT, LOAD_MORE_COUNT} from "../const.js";
 import TasksComponent from "./tasks.js";
 import LoadMoreButtonComponent from "./loadMoreButton.js";
-import SorterComponent, {SortType} from "./sort.js";
+import SorterComponent from "./sort.js";
 import NoTasksComponent from "./no-tasks.js";
 
 import {render, isEscKey, remove} from "../utils.js";
@@ -57,7 +57,6 @@ const renderTasksList = (container, tasks) => {
   });
 };
 
-
 const loadMoreHandler = (boardComponent, tasks, container, button) => {
   const loadedTasks = boardComponent.querySelectorAll(`.card`);
   const nextLoadingCount = loadedTasks.length + LOAD_MORE_COUNT;
@@ -70,23 +69,12 @@ const loadMoreHandler = (boardComponent, tasks, container, button) => {
   }
 };
 
-
-const getSortedTasks = (tasks, sortType) => {
-  let tasksToSort = [];
-
-  switch (sortType) {
-    case SortType.DATE_UP:
-      tasksToSort = [...tasks].sort((a, b) => a.dueDate - b.dueDate);
-      break;
-    case SortType.DATE_DOWN:
-      tasksToSort = [...tasks].sort((a, b) => b.dueDate - a.dueDate);
-      break;
-    case SortType.DEFAULT:
-      tasksToSort = tasks;
-      break;
-  }
-
-  return tasksToSort;
+const getSortedTasks = (tasks) => {
+  return {
+    'date-down': [...tasks].sort((currentTask, nextTask) => currentTask.dueDate - nextTask.dueDate),
+    'date-up': [...tasks].sort((currentTask, nextTask) => nextTask.dueDate - currentTask.dueDate),
+    'default': tasks
+  };
 };
 
 export default class BoardController {
@@ -131,7 +119,7 @@ export default class BoardController {
     this.renderLoadMoreBtn(container, tasks, taskListElement);
 
     this._sortComponent.setSortTypeChangeHandler((sortType) => {
-      const sortedTasks = getSortedTasks(tasks, sortType);
+      const sortedTasks = getSortedTasks(tasks)[sortType];
       taskListElement.innerHTML = ``;
 
       renderTasksList(taskListElement, sortedTasks.slice(0, showingTasksCount));
