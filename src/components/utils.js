@@ -22,4 +22,9 @@ export const createElement = (template) => {
   return newElement.firstChild;
 };
 
+export const remove = (component) => {
+  component.getElement().remove();
+  component.removeElement();
+};
+
 export const isEscKey = (evt) => evt.key === EscKeys.ESCAPE || evt.key === EscKeys.ESC;
