@@ -20,6 +20,7 @@ export default class Sorter extends AbstractComponent {
   constructor() {
     super();
     this._currenSortType = SortType.DEFAULT;
+    this._sortHandler = this._sortHandler.bind(this);
   }
   getTemplate() {
     return createSorter();
@@ -29,8 +30,8 @@ export default class Sorter extends AbstractComponent {
     return this._currenSortType;
   }
 
-  setSortTypeChangeHandler(handler) {
-    this.getElement().addEventListener(`click`, (evt) => {
+  _sortHandler(handler) {
+    return (evt) => {
       evt.preventDefault();
 
       if (evt.target.tagName !== `A`) {
@@ -46,6 +47,10 @@ export default class Sorter extends AbstractComponent {
       this._currenSortType = sortType;
 
       handler(this._currenSortType);
-    });
+    };
+  }
+
+  setSortTypeChangeHandler(handler) {
+    this.getElement().addEventListener(`click`, this._sortHandler(handler));
   }
 }
