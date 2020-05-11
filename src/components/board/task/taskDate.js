@@ -1,9 +1,8 @@
-import {MONTHS} from "../../const.js";
-import {formatTime} from "../../../mocks/board/task.js";
+import {formatTime, formatDate} from "../../../mocks/board/task.js";
 
 const getDate = (currentDate) => {
   const isDateShowing = !!currentDate;
-  return isDateShowing ? `${currentDate.getDate()} ${MONTHS[currentDate.getMonth()]}` : ``;
+  return isDateShowing ? `${formatDate(currentDate)}` : ``;
 };
 
 const getTime = (currentDate) => {
