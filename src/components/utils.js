@@ -27,4 +27,16 @@ export const remove = (component) => {
   component.removeElement();
 };
 
+export const replace = (newComponent, oldComponent) => {
+  const parentElement = oldComponent.getElement().parentElement;
+  const newElement = newComponent.getElement();
+  const oldElement = oldComponent.getElement();
+
+  const isExistElements = Boolean(parentElement && newElement && oldElement);
+
+  if (isExistElements && parentElement.contains(oldElement)) {
+    parentElement.replaceChild(newElement, oldElement);
+  }
+};
+
 export const isEscKey = (evt) => evt.key === EscKeys.ESCAPE || evt.key === EscKeys.ESC;
