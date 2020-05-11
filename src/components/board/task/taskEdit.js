@@ -5,6 +5,9 @@ import {editDatesMarkup, deadlineToggleMarkup} from "././taskDate.js";
 import {repeatingBlockEdit} from "./repeatingBlockEdit.js";
 import {getExpiredClass} from "./task.js";
 import AbstractSmartComponent from "../../abstract-smart-component.js";
+import flatpickr from "flatpickr";
+
+import "flatpickr/dist/flatpickr.min.css";
 
 const createTaskEdit = (task, options = {}) => {
   const {description, dueDate, color} = task;
@@ -79,7 +82,9 @@ export default class TaskEdit extends AbstractSmartComponent {
     this._activeRepeatingDays = Object.assign({}, task.repeatingDays);
 
     this._submitHandler = null;
+    this._flatpickr = null;
     this._subscribeOnEvents();
+    this._applyFlatpickr();
   }
 
   getTemplate() {
@@ -97,6 +102,8 @@ export default class TaskEdit extends AbstractSmartComponent {
 
   rerender() {
     super.rerender();
+
+    this._applyFlatpickr();
   }
 
   reset() {
@@ -115,6 +122,22 @@ export default class TaskEdit extends AbstractSmartComponent {
       .addEventListener(`submit`, handler);
 
     this._submitHandler = handler;
+  }
+
+  _applyFlatpickr() {
+    if (this._flatpickr) {
+      this._flatpickr.destroy();
+      this._flatpickr = null;
+    }
+
+    if (this._isDateShowing) {
+      const dateElement = this.getElement().querySelector(`.card__date`);
+      this._flatpickr = flatpickr(dateElement, {
+        altInput: true,
+        allowInput: true,
+        defaultDate: this._task.dueDate || `today`,
+      });
+    }
   }
 
   _subscribeOnEvents() {

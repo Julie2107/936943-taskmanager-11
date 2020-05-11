@@ -1,6 +1,7 @@
 // DESCRIPTIONS
 import {getRandomInteger, getRandomBoolean} from "../../components/utils.js";
 import {COLORS, DAYS} from "../../components/const.js";
+import moment from "moment";
 
 const DESCRIPTIONS = [
   `Изучить теорию`,
@@ -14,8 +15,6 @@ const DESCRIPTIONS = [
 ];
 
 const WEEK_PERIOD = 8;
-const HOURS_RATE = 10;
-const HOURS_FORMAT = 24;
 const NEGATIVE = -1;
 const POSITIVE = 1;
 
@@ -25,13 +24,13 @@ export const generateDescription = (desc) => desc[getRandomInteger(0, desc.lengt
 export const generateColor = (colors) => colors[getRandomInteger(0, colors.length)];
 
 // date
-const castTimeFormat = (value) => value < HOURS_RATE ? `0${value}` : String(value);
 
 export const formatTime = (date) => {
-  const hours = castTimeFormat(date.getHours() % HOURS_FORMAT);
-  const minutes = castTimeFormat(date.getMinutes());
+  return moment(date).format(`hh:mm`);
+};
 
-  return `${hours}:${minutes}`;
+export const formatDate = (date) => {
+  return moment(date).format(`DD MMMM`);
 };
 
 const getRandomDate = () => {
