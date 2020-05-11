@@ -8,12 +8,14 @@ export const getExpiredClass = (currentDate) => {
 };
 
 const createTask = (task) => {
-  const {description, dueDate, color, repeatingDays, isArchive, isFavorite} = task;
+/*  const {description, dueDate, color, repeatingDays, isArchive, isFavorite} = task;
+*/
 
+  const {repeatingDays} = task;
   const repeatClass = Object.values(repeatingDays).some(Boolean) ? `card--repeat` : ``;
 
   return (
-    `<article class="card card--${color} ${repeatClass} ${getExpiredClass(task.dueDate)}">
+    `<article class="card card--${task.color} ${repeatClass} ${getExpiredClass(task.dueDate)}">
       <div class="card__form">
         <div class="card__inner">
           <div class="card__control">

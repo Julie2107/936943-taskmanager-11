@@ -1,6 +1,6 @@
 import TaskComponent from "./task/task.js";
 import TaskEditComponent from "./task/taskEdit.js";
-import {render, isEscKey, remove, replace} from "../utils.js";
+import {render, isEscKey, replace} from "../utils.js";
 
 const Mode = {
   DEFAULT: `default`,
@@ -31,13 +31,13 @@ export default class TaskController {
     this._taskComponent.setFavoritesButtonHandler(() => {
       this._onDataChange(this, task, Object.assign({}, task, {
         isFavorite: !task.isFavorite,
-      }))
+      }));
     });
 
     this._taskComponent.setArchiveButtonHandler(() => {
       this._onDataChange(this, task, Object.assign({}, task, {
         isArchive: !task.isArchive,
-      }))
+      }));
     });
 
     this._taskEditComponent.setSubmitHandler((evt) => {
@@ -64,7 +64,7 @@ export default class TaskController {
       this._saveEditFormHandler();
       document.removeEventListener(`keydown`, this._escKeyHandler);
     }
-  };
+  }
 
   _openEditFormHandler() {
     this._onViewChange();

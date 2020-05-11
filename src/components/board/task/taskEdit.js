@@ -6,23 +6,19 @@ import {repeatingBlockEdit} from "./repeatingBlockEdit.js";
 import {getExpiredClass} from "./task.js";
 import AbstractSmartComponent from "../../abstract-smart-component.js";
 
-const isRepeating = (repeatingDays) => {
-  return Object.values(repeatingDays).some(Boolean);
-};
-
 const createTaskEdit = (task, options = {}) => {
   const {description, dueDate, color} = task;
-  const {isDateShowing, isRepeatingTask, activeRepeatingDays} = options;
+  const {isRepeatingTask, activeRepeatingDays} = options;
 
-  const isExpired = dueDate instanceof Date && dueDate < Date.now();
-  const isBlockSaveButton = (isDateShowing && isRepeatingTask) ||
-    (isRepeatingTask && !isRepeating(activeRepeatingDays));
+  // const isExpired = dueDate instanceof Date && dueDate < Date.now();
+  /*  const isBlockSaveButton = (isDateShowing && isRepeatingTask) ||
+    (isRepeatingTask && !isRepeating(activeRepeatingDays));*/
 
-  //const date = (isDateShowing && dueDate) ? formatDate(dueDate) : ``;
-  //const time = (isDateShowing && dueDate) ? formatTime(dueDate) : ``;
+  // const date = (isDateShowing && dueDate) ? formatDate(dueDate) : ``;
+  // const time = (isDateShowing && dueDate) ? formatTime(dueDate) : ``;
 
   const repeatClass = isRepeatingTask ? `card--repeat` : ``;
-  const deadlineClass = isExpired ? `card--deadline` : ``;
+  // const deadlineClass = isExpired ? `card--deadline` : ``;
   const colorsMarkup = createColorsMarkup(COLORS, color);
   const repeatMarkup = isRepeatingTask ? repeatingBlockEdit(createRepeatingDaysMarkup(DAYS, activeRepeatingDays)) : ``;
 
@@ -118,7 +114,7 @@ export default class TaskEdit extends AbstractSmartComponent {
     this.getElement().querySelector(`form`)
       .addEventListener(`submit`, handler);
 
-      this._submitHandler = handler;
+    this._submitHandler = handler;
   }
 
   _subscribeOnEvents() {

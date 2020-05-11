@@ -1,5 +1,3 @@
-import TaskComponent from "./task/task.js";
-import TaskEditComponent from "./task/taskEdit.js";
 import {TASK_FIRST_COUNT, LOAD_MORE_COUNT} from "../const.js";
 import TasksComponent from "./tasks.js";
 import LoadMoreButtonComponent from "./loadMoreButton.js";
@@ -7,38 +5,7 @@ import SorterComponent from "./sort.js";
 import NoTasksComponent from "./no-tasks.js";
 import TaskController from "./task-controller.js";
 
-import {render, isEscKey, remove, replace} from "../utils.js";
-
-/*export const renderTask = (taskListElement, task) => {
-  /*const editButtonHandler = () => {
-    replace(taskEditComponent, taskComponent);
-  };
-
-  const editFormSubmitHandler = () => {
-    replace(taskComponent, taskEditComponent);
-  };*/
-
-  /*const escKeyHandler = (evt) => {
-    if (isEscKey(evt)) {
-      editFormSubmitHandler();
-      document.removeEventListener(`keydown`, escKeyHandler);
-    }
-  };
-
-  const taskComponent = new TaskComponent(task);
-  taskComponent.setEditButtonClickHandler(() => {
-    editButtonHandler();
-    document.addEventListener(`keydown`, escKeyHandler);
-  });
-
-  const taskEditComponent = new TaskEditComponent(task);
-  taskEditComponent.setSubmitHandler(() => {
-    editFormSubmitHandler();
-    document.removeEventListener(`keydown`, escKeyHandler);
-  });
-
-  render(taskListElement, taskComponent);
-};*/
+import {render, remove} from "../utils.js";
 
 const renderTasks = (taskListElement, tasks, onDataChange, onViewChange) => {
   return tasks.map((task) => {
@@ -49,18 +16,6 @@ const renderTasks = (taskListElement, tasks, onDataChange, onViewChange) => {
     return taskController;
   });
 };
-
-/*const loadMoreHandler = (boardComponent, tasks, container, button) => {
-  const loadedTasks = boardComponent.querySelectorAll(`.card`);
-  const nextLoadingCount = loadedTasks.length + LOAD_MORE_COUNT;
-  const nextTasksList = tasks.slice(loadedTasks.length, nextLoadingCount);
-
-  renderTasksList(container, nextTasksList);
-
-  if (nextLoadingCount >= tasks.length) {
-    remove(button);
-  }
-};*/
 
 const getSortedTasks = (tasks) => {
   return {
@@ -92,7 +47,7 @@ export default class BoardController {
     this._tasks = tasks;
     const isAllTasksArchived = this._tasks.every((task) => task.isArchive);
     if (isAllTasksArchived) {
-      render(container, this._noTasksComponent);
+      render(this._container, this._noTasksComponent);
       return;
     }
 
@@ -118,8 +73,6 @@ export default class BoardController {
       return;
     }
 
-    console.log(oldData, newData);
-
     this._tasks = [].concat(this._tasks.slice(0, index), newData, this._tasks.slice(index + 1));
 
     taskController.render(this._tasks[index]);
@@ -127,7 +80,7 @@ export default class BoardController {
 
   _renderLoadMoreBtn(tasks, element) {
     const loadMoreButton = this._loadMoreButtonComponent;
-    if(this._showingTasksCount >= this._tasks.length) {
+    if (this._showingTasksCount >= this._tasks.length) {
       return;
     }
 
@@ -141,7 +94,7 @@ export default class BoardController {
     });
   }
 
-  _getSortHandler(sortType, container) {
+  _getSortHandler(sortType) {
     const taskListElement = this._tasksComponent.getElement();
 
     const sortedTasks = getSortedTasks(this._tasks)[sortType];
