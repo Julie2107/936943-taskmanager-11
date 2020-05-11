@@ -8,16 +8,18 @@ export const getExpiredClass = (currentDate) => {
 };
 
 const createTask = (task) => {
-  const {description, dueDate, color, repeatingDays, isArchive, isFavorite} = task;
+/*  const {description, dueDate, color, repeatingDays, isArchive, isFavorite} = task;
+*/
 
+  const {repeatingDays} = task;
   const repeatClass = Object.values(repeatingDays).some(Boolean) ? `card--repeat` : ``;
 
   return (
-    `<article class="card card--${color} ${repeatClass} ${getExpiredClass(dueDate)}">
+    `<article class="card card--${task.color} ${repeatClass} ${getExpiredClass(task.dueDate)}">
       <div class="card__form">
         <div class="card__inner">
           <div class="card__control">
-            ${taskControlsMarkup(isArchive, isFavorite)}
+            ${taskControlsMarkup(task.isArchive, task.isFavorite)}
           </div>
 
           <div class="card__color-bar">
@@ -27,12 +29,12 @@ const createTask = (task) => {
           </div>
 
           <div class="card__textarea-wrap">
-            <p class="card__text">${description}</p>
+            <p class="card__text">${task.description}</p>
           </div>
 
           <div class="card__settings">
             <div class="card__details">
-              ${taskDatesMarkup(dueDate)}
+              ${taskDatesMarkup(task.dueDate)}
             </div>
           </div>
         </div>
@@ -51,7 +53,17 @@ export default class Task extends AbstractComponent {
     return createTask(this._task);
   }
 
-  setEditButtonClickHandler(handler) {
+  setEditButtonHandler(handler) {
     this.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, handler);
+  }
+
+  setFavoritesButtonHandler(handler) {
+    this.getElement().querySelector(`.card__btn--favorites`)
+      .addEventListener(`click`, handler);
+  }
+
+  setArchiveButtonHandler(handler) {
+    this.getElement().querySelector(`.card__btn--archive`)
+      .addEventListener(`click`, handler);
   }
 }
